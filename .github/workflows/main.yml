@@ -1,12 +1,26 @@
-name: My First Action
-on: [push]
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: ["main"] # Only "sends it out" when you push to main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.' # This sends out your entire folder
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-      - name: Run a simple script
-        run: echo "Hello, GitHub Actions is officially running!"
